@@ -1,5 +1,7 @@
 #!/usr/bin/php
 <?php
+# vim configuration:
+# vim:foldmethod=marker
 
 class alphanum {/*{{{*/
 
