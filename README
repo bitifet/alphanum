@@ -1,0 +1,29 @@
+PHP multi-language number conversion class to convert numeric data into strings and vice-versa.
+
+This class is intended to be able to convert any numeric data in its textual string in multiple languages and textual numbers back into numeric data.
+
+The resultant strings must be correct in the selected language and the string-to-number conversion must be able to understand and ignore common syntax mistakes.
+
+We will also implement functions to generate a few string variations of the same number with common mistakes and also other language variations like gender in languages that distinguish them in numbering.
+
+Finally, we will implement functions to detect any numeric data in any format (and possibly in any given languages) inside strings mixed with non numeric text and normalyze all of them to, say, numeric digits to be able to compare strings without taking care of the way numbers are represented in it.
+
+
+For example: sa2i('99 red balloons') == sa2i('ninety-nine red balloons') // will evaluate to true.
+
+
+This class operates with natural numbers starting from zero, but in the future, functions to work with floating poing formats will be also provided.
+
+Other future improvements will be support for ordinals (probably same way than gender) or romans (accepting or not accepting lowercased as such).
+
+
+And last, but not least, I would like to implement some plpgsql function generator to generate compatible plpgsql functions that can, at least, normalyze any string in selected languages replacing all number, whichever format is written, to its equivalent number.
+
+This way, we could generate PostgreSQL indexes over this function applyed over string columns and then, build efficient querys to search strings "numbering-insensitive"
+
+
+
+[TESTING]
+
+For testing purposes, alphanum.php has a few code which enable it as a number-to string utility (this may change in future).
+Type ./alphanum.php without parameters to see how it works.

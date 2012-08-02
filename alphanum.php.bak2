@@ -1,0 +1,179 @@
+#!/usr/bin/php
+<?php
+
+class alphanum {
+
+	private $r;
+	private $lang;
+
+
+	function __construct (
+		$lang = 'ca'
+	) {
+
+		$this->lang = $lang;
+
+		// Catalan /*{{{*/
+		$this->r['ca'] = array ( // Default / male:/*{{{*/
+///			'n00' => 'uuu', // zero-carry
+
+			'n0' => 'zero',
+			'n1' => 'un',
+			'n2' => 'dos',
+			'n3' => 'tres',
+			'n4' => 'quatre',
+			'n5' => 'cinc',
+			'n6' => 'sis',
+			'n7' => 'set',
+			'n8' => 'vuit',
+			'n9' => 'nou',
+
+			'n10' => 'deu',
+			'n11' => 'onze',
+			'n12' => 'dotze',
+			'n13' => 'tretze',
+			'n14' => 'catorze',
+			'n15' => 'quinze',
+			'n16' => 'setze',
+			'n17' => 'disset',
+				'r17' => 'd[ie]ss?et',
+
+			'n1x' => 'di',
+				'r1x' => 'd[ie]',
+
+			'n20' => 'vint',
+			'n2x' => 'vint-i-',
+			'n30' => 'trenta',
+			'n3x' => 'trenta-',
+			'n40' => 'quaranta',
+				'r40' => '(?:qua|cua|co)ranta',
+			'n4x' => 'quaranta-',
+				'r4x' => '(?:qua|cua|co)ranta-',
+			'n50' => 'cinquanta',
+				'r50' => 'cin[qc]uanta',
+			'n5x' => 'cinquanta-',
+				'r5x' => 'cin[qc]uanta-',
+			'n60' => 'seixanta',
+				'r60' => '(?:sei|xei|xe|xi)xanta',
+			'n6x' => 'seixanta-',
+				'r6x' => '(?:sei|xei|xe|xi)xanta-',
+			'n70' => 'setanta',
+			'n7x' => 'setanta-',
+			'n80' => 'vuitanta',
+			'n8x' => 'vuitanta-',
+			'n90' => 'noranta',
+			'n9x' => 'noranta-',
+
+			'n100' => 'cent',
+			'n1xx' => 'cent ',
+			'nx00' => '-cents',
+			'nxxx' => '-cents ',
+			'n0xx' => '',
+
+			'n1000' => 'mil',
+			'n1xxx' => 'mil ',
+			'nx000' => ' mil',
+			'nxxxx' => ' mil ',
+			'n0xxx' => '',
+
+			'n1000000' => 'un milió',
+			'n1xxxxxx' => 'un milió ',
+			'nx000000' => ' milions',
+			'nxxxxxxx' => ' milions ',
+			'n0xxxxxx' => '',
+
+			/* Not used colloquially.
+			'n1000000000' => 'un miliard',
+			'n1xxxxxxxxx' => 'un miliard ',
+			'nx000000000' => ' miliards',
+			'nxxxxxxxxxx' => ' miliards ',
+			'n0xxxxxxxxx' => '',
+			 */
+
+			'n1000000000000' => 'un bilió',
+			'n1xxxxxxxxxxxx' => 'un bilió ',
+			'nx000000000000' => ' bilions',
+			'nxxxxxxxxxxxxx' => ' bilions ',
+			'n0xxxxxxxxxxxx' => '',
+
+			'n1000000000000000000' => 'un trilió',
+			'n1xxxxxxxxxxxxxxxxxx' => 'un trilió ',
+			'nx000000000000000000' => ' trilions',
+			'nxxxxxxxxxxxxxxxxxxx' => ' trilions ',
+			'n0xxxxxxxxxxxxxxxxxx' => '',
+
+		);/*}}}*/
+		$this->r['ca_fem'] = array_merge ( // Female variations:/*{{{*/
+			$this->r['ca'],
+			array (
+				'n1' => 'una',
+				'n2' => 'dues',
+			)
+		);/*}}}*/
+		/*}}}*/
+
+
+	}
+
+
+	function i2a (
+		$i,
+		$lang = null,
+		$c = null // Carry
+	) {
+
+		is_null ($lang) && $lang = $this->lang;
+
+		$a = ltrim($c, '0') . $i[0];
+////		$a = $c . $i[0];
+		$b = substr ($i, 1);
+		$x = str_repeat (
+			(preg_match ('/[^0]/', $b) ? 'x' : '0'),
+			strlen($b)
+		);
+		$r = '';
+
+///		if ($a == '0' && strlen ($b)) {
+///			is_null ($c) || $r = $this->i2a($b);
+///		} else
+///			echo "((($i - $a:$b)))";
+		
+		if ($a === '0' && strlen ($b) && ! is_null ($c)) {
+			echo "-> 1\n";
+			$r = $this->i2a($b, $lang, '0');
+////			 if ($r == 'zero') $r = ''; //////////////////////// FIXME!!!!!!!!!!!!!!!!!!!!!!!
+		} else
+		if (null !== $n = @ $this->r[$lang]["n{$a}{$b}"]) { // n a bbbb
+			if ("n$a$b" == "n00") echo "------------------->$n<------------------\n";
+///			echo "-> 2\n";
+			$r = $n;
+		} else if (null !== $n = @ $this->r[$lang]["n{$a}{$x}"]) { // n a xxxx
+///			echo "-> 3\n";
+			$r = $n . $this->i2a($b, $lang, '0');
+		} else if (null !== $n = @ $this->r[$lang]["nx{$x}"]) { // n x xxxx
+///			echo "-> 4\n";
+			$r = $this->i2a($a, $lang, '0') . $n . $this->i2a($b, $lang, '0');
+		} else if (strlen ($b)) {
+///			echo "-> 5\n";
+			$r = $this->i2a($b, $lang, $a);
+		} else {
+///			echo "-> 6\n";
+			$r = "[error:$i/$a/$b]";
+		};
+
+		echo "($i: $a - $b - $c -> $r)\n";
+
+///		if (is_null($c)) $r = "($r)";
+		return $r;
+
+	}
+
+
+
+};
+
+
+$x = new alphanum();
+
+echo "." . $x->i2a($argv[1]) . ".\n";
+
