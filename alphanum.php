@@ -2,6 +2,11 @@
 <?php
 # vim configuration:
 # vim:foldmethod=marker
+#
+# HINT: If you are using vim, foldmethod=marker is automatically enabled.
+#     Use 'za' to expand/hide folds.
+#     Type :help folding to learn more about vim folding.
+
 
 class alphanum {/*{{{*/
 
@@ -207,11 +212,12 @@ class alphanum {/*{{{*/
 };/*}}}*/
 
 
-$x = new alphanum();
 
 
 // Debugging stuff:
 // ===============
+
+$x = new alphanum();
 
 // $n0 = Start:/*{{{*/
 if (
