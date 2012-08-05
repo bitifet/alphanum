@@ -37,7 +37,7 @@ $r['es'] = array ( // Default / male:/*{{{*/
 		'r1x' => 'di?eci',
 
 	'n20' => 'veinte',
-	'n2x' => 'veinti ',
+	'n2x' => 'veinti',
 	'n30' => 'treinta',
 	'n3x' => 'treinta y ',
 	'n40' => 'cuarenta',
