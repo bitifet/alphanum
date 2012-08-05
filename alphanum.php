@@ -241,8 +241,13 @@ $inc = floor($inc);
 $p = 1 + floor(log($n, 10)); // Needed padding width.
 
 
-
-for (
+if (
+	$n0 == $n
+	&& ($n0 >= 100000000000000)
+) {
+	// Let to test big numbers individually (alphanum doesn't threat floats propperly)
+	echo "{$argv[1]} -> [" . $x->i2a($argv[1]) . "]\n";
+} else for (
 	$i = $n0;
 	$i <= $n;
 	$i+= $inc
