@@ -65,6 +65,8 @@ $r['es'] = array ( // Default / male:/*{{{*/
 	'n5xx' => 'quinientos ',
 	'n700' => 'setecientos',
 	'n7xx' => 'setecientos ',
+	'n900' => 'novecientos',
+	'n9xx' => 'novecientos ',
 
 	'n1000' => 'mil',
 	'n1xxx' => 'mil ',
