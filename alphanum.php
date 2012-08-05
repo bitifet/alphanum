@@ -15,31 +15,56 @@ class alphanum {/*{{{*/
 
 
 	function __construct (/*{{{*/
-		$lang = array ('es', 'ca') // Language definitions to load.
+		$lang = array ('en'), // Language definitions to load.
+		$usecache = true
 	) {
 
+		// Select first language as default:/*{{{*/
+		is_array ($lang) || $lang = array ($lang); // Accept string for single lang. specification.
 		if ( ! strlen (
 			@ $this->lang = $lang[0]
 		)) throw new Exception ('ALPHANUM: Constructor requires at least one language specification.');
+		/*}}}*/
 
+		// Build unique language-set id:/*{{{*/
+		sort ($lang); // Ensure same order to avoid cache duplications.
+		$full_lang = implode ('+', $lang);
+		/*}}}*/
 
-		$this->r = array();
-		foreach (
-			$lang
-			as $lc
-		) if (
-			// Perform minimum consistency tests:
-			is_array (
-				$r = @ include ("lang/i18n_{$lc}.php")
-			)
-			&& count ($r)
+		// Try to fetch language data from cache:/*{{{*/
+		$usecache && @ $this->r = unserialize (file_get_contents ($cachef = "cache/i18n_{$full_lang}.cache"));
+		/*}}}*/
+
+		// Language data processing and caching:/*{{{*/
+		if (
+			// Not already cached.
+			! is_array ($this->r)
 		) {
-			// Load language:
-			$this->r = array_merge ($this->r, $r);
-		} else {
-			throw new Exception ("ALPHANUM: Failed to load language {$lc}.");
-		};
+			$this->r = array();
+			foreach (
+				$lang
+				as $lc
+			) if (
+				// Perform minimum consistency tests:
+				is_array (
+					$r = @ include ("lang/i18n_{$lc}.php")
+				)
+				&& count ($r)
+			) {
+				// Load language:
+				$this->r = array_merge ($this->r, $r);
+			} else {
+				throw new Exception ("ALPHANUM: Failed to load language {$lc}.");
+			};
 
+			// Save to cache (if enabled):/*{{{*/
+			if (
+				$usecache && (@ false === file_put_contents ($cachef, serialize ($this->r)))
+			) throw new Exception ("ALPHANUM: Cannot write to cache file: {$cachef}");
+			/*}}}*/
+
+		};
+		/*}}}*/
 
 	}/*}}}*/
 
@@ -73,6 +98,8 @@ class alphanum {/*{{{*/
 			$r = $this->priv_i2a($a, $lang) . $n;
 		} else if (null !== $n = @ $this->r[$lang]["n{$a}{$x}"]) {	// 37
 			$r = $n . $this->priv_i2a($b, $lang);
+		} else if (null !== $n = @ $this->r[$lang]["n{$x}{$a}"]) {	// 17 (seventeen)
+			$r = $this->priv_i2a($b, $lang) . $n;
 		} else if (null !== $n = @ $this->r[$lang]["nx{$x}"]) {		// 77
 			$r = $this->priv_i2a($a, $lang) . $n . $this->priv_i2a($b, $lang);
 		} else if (strlen ($b)) {
@@ -130,7 +157,10 @@ class alphanum {/*{{{*/
 // Debugging stuff:
 // ===============
 
-$x = new alphanum();
+$x = new alphanum(
+	'en',
+	false // Disable cache for debugging.
+);
 
 // $n0 = Start:/*{{{*/
 if (

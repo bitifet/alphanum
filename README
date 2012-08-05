@@ -27,3 +27,28 @@ This way, we could generate PostgreSQL indexes over this function applyed over s
 
 For testing purposes, alphanum.php has a few code which enable it as a number-to string utility (this may change in future).
 Type ./alphanum.php without parameters to see how it works.
+
+
+[EXAMPLES]
+
+[en]
+13 -> [thirteen]
+230007234 -> [two hundred and thirty millions seven thousands and two hundred and thirty-four]
+700000001002 -> [seven hundred thousands millions thousand and two]
+270023576340045 -> [two hundred and seventy bilions twenty-three thousands and five hundred and seventy-six millions three hundred and fourty thousands and fourty-five]
+980320002004034323319 -> [nine hundred and eighty trillons three hundred and twenty thousands and two bilions four thousands and thirty-four millions three hundred and twenty-three thousands and three hundred and nineteen]
+
+[ca]
+13 -> [tretze]
+230007234 -> [dos-cents trenta milions set mil dos-cents trenta-quatre]
+700000001002 -> [set-cents mil milions mil dos]
+270023576340045 -> [dos-cents setanta bilions vint-i-tres mil cinc-cents setanta-sis milions tres-cents quaranta mil quaranta-cinc]
+980320002004034323319 -> [nou-cents vuitanta trilions tres-cents vint mil dos bilions quatre mil trenta-quatre milions tres-cents vint-i-tres mil tres-cents dinou]
+
+[es]
+13 -> [trece]
+230007234 -> [doscientos treinta miliones siete mil doscientos treinta y cuatro]
+700000001002 -> [setecientos mil miliones mil dos]
+270023576340045 -> [doscientos setenta billones veinti tres mil quinientos setenta y seis miliones trescientos cuarenta mil cuarenta y cinco]
+980320002004034323319 -> [nuevecientos ochenta trillones trescientos veinte mil dos billones cuatro mil treinta y cuatro miliones trescientos veinti tres mil trescientos diecinueve]
+
