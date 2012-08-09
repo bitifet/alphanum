@@ -52,3 +52,12 @@ Type ./alphanum.php without parameters to see how it works.
 270023576340045 -> [doscientos setenta billones veintitres mil quinientos setenta y seis miliones trescientos cuarenta mil cuarenta y cinco]
 980320002004034323319 -> [novecientos ochenta trillones trescientos veinte mil dos billones cuatro mil treinta y cuatro miliones trescientos veintitres mil trescientos diecinueve]
 
+[roman]
+12 -> [XII]
+450 -> [CDL]
+666 -> [DCLXVI]
+999 -> [CMXCIX]
+1444 -> [MCDXLIV]
+2012 -> [MMXII]
+2014 -> [MMXIV]
+2016 -> [MMXVI]
