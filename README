@@ -52,6 +52,13 @@ Type ./alphanum.php without parameters to see how it works.
 270023576340045 -> [doscientos setenta billones veintitres mil quinientos setenta y seis miliones trescientos cuarenta mil cuarenta y cinco]
 980320002004034323319 -> [novecientos ochenta trillones trescientos veinte mil dos billones cuatro mil treinta y cuatro miliones trescientos veintitres mil trescientos diecinueve]
 
+[de] -- Need to be checked (Internet based)
+13 -> [dreizehn]
+230007234 -> [zweihundertdreißigmillionundsiebentausendundzweihundertvierunddreißig]
+700000001002 -> [siebenhundertnullmillardeundeinstausendundzwei]
+270023576340045 -> [zweihundertsiebzigbillionunddreiundzwanzigmillardeundfünfhundertsechsundsiebzigmillionunddreihundertvierzigtausendundfünfundvierzig]
+980320002004034323319 -> [neunhundertachtzigmillionunddreihundertzwanzigtausendundzweibillionundviermillardeundvierunddreißigmillionunddreihundertdreiundzwanzigtausendunddreihundertneunzehn]
+
 [roman]
 12 -> [XII]
 450 -> [CDL]
