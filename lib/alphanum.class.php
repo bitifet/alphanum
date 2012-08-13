@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 # vim configuration:
 # vim:foldmethod=marker
@@ -8,7 +7,7 @@
 #     Type :help folding to learn more about vim folding.
 
 
-class alphanum {/*{{{*/
+class alphanum {
 
 	private $r;
 	private $lang;
@@ -149,49 +148,5 @@ class alphanum {/*{{{*/
 	}/*}}}*/
 
 
-};/*}}}*/
+};
 
-
-
-
-// Debugging stuff:
-// ===============
-
-$x = new alphanum(
-	'en',
-	false // Disable cache for debugging.
-);
-
-// $n0 = Start:/*{{{*/
-if (
-	! is_numeric (@ $n0 = $argv[1])
-) die (
-	"Syntax: " . $argv[0] . " <start> [[end=start] inc=1]\n"
-);
-$n0 = abs(floor($n0));
-/*}}}*/
-
-// $n = Stop (defaults to start):/*{{{*/
-((@ $n = $argv[2] + 0) > $n0) || $n = $n0;
-$n = abs(floor($n));
-/*}}}*/
-
-// $n = Stop (defaults to start):/*{{{*/
-((@ $inc = $argv[3] + 0) >= 1) || $inc = 1;
-$inc = floor($inc);
-/*}}}*/
-
-$p = 1 + floor(log($n, 10)); // Needed padding width.
-
-
-if (
-	$n0 == $n
-	&& ($n0 >= 100000000000000)
-) {
-	// Let to test big numbers individually (alphanum doesn't threat floats propperly)
-	echo "{$argv[1]} -> [" . $x->i2a($argv[1]) . "]\n";
-} else for (
-	$i = $n0;
-	$i <= $n;
-	$i+= $inc
-) echo sprintf("%{$p}s -> [%s]\n", $i, $x->i2a($i));

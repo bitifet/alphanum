@@ -4,9 +4,13 @@ This class is intended to be able to convert any numeric data in its textual str
 
 The resultant strings must be correct in the selected language and the string-to-number conversion must be able to understand and ignore common syntax mistakes.
 
-We will also implement functions to generate a few string variations of the same number with common mistakes and also other language variations like gender in languages that distinguish them in numbering.
+It can understand and generate strings in each language standard and in many variations such as localizations, ordinals, or gender variations.
 
-Finally, we will implement functions to detect any numeric data in any format (and possibly in any given languages) inside strings mixed with non numeric text and normalyze all of them to, say, numeric digits to be able to compare strings without taking care of the way numbers are represented in it.
+Variations are specified by one or more underscore preceded suffixs in the language code.
+
+We will also implement functions to generate and recognize many set of strings meaning the same number including not only variations but also common human mistakes to make it more efficient in text recognition or normalyzation tasks.
+
+Finally, we will implement functions to detect any numeric data in any format (and possibly in any given languages or variations, including common human mistakes) inside strings mixed with non numeric text and normalyze all of them to, say, numeric digits to be able to compare strings without taking care of the way numbers are represented in it.
 
 
 For example: sa2i('99 red balloons') == sa2i('ninety-nine red balloons') // will evaluate to true.
@@ -19,14 +23,23 @@ Other future improvements will be support for ordinals (probably same way than g
 
 And last, but not least, I would like to implement some plpgsql function generator to generate compatible plpgsql functions that can, at least, normalyze any string in selected languages replacing all number, whichever format is written, to its equivalent number.
 
+First step for that will be providing functions generate the propper regular expressions to detect and convert numbers in desired languages/variations.
+
 This way, we could generate PostgreSQL indexes over this function applyed over string columns and then, build efficient querys to search strings "numbering-insensitive"
 
 
 
-[TESTING]
+[PROJECT STRUCTURE]
+./README					- This readme file.
+./LICENSE				- Licensing terms (GPLv3)
+./doc/
+./lib/
+	alphanum.class.php	- Alphanum library.
+	lang/						- Language and variations specification files.
+	cache/					- Used for language structures caching.
+./tools/
+	a2i.php					- Tool to test text-to-number conversion.
 
-For testing purposes, alphanum.php has a few code which enable it as a number-to string utility (this may change in future).
-Type ./alphanum.php without parameters to see how it works.
 
 
 [EXAMPLES]
