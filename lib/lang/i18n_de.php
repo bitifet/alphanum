@@ -18,7 +18,10 @@ $r['de'] = array ( /*{{{*/
 		'es'	=> 'Alemán',
 	),
 
+	'@decimal' => '.',
 
+	'n-' => 'weniger ',
+	'n.' => ' koma ',
 	'n0'	=> 'null',	//0
 	'n1'	=> 'eins',	//1
 	'n2'	=> 'zwei',	//2

@@ -15,6 +15,7 @@ $r['es'] = array ( // Default / male:/*{{{*/
 
 	'@decimal' => ',',
 
+	'n-' => 'menos ',
 	'n.' => ' coma ',
 	'n0' => 'cero',
 	'n1' => 'uno',
