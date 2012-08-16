@@ -5,15 +5,13 @@
 
 // Spain:
 $r['ca'] = array ( // Default / male:/*{{{*/
-/*
-	'n00' => '',
-	'n000' => '',
-	'n0000' => '',
-	'n00000' => '',
-	'n000000' => '',
-	'n0000000' => '',
-	'n00000000' => '',
-*/
+
+	'@label' => array (
+		'ca' => 'Català',
+		'en' => 'Catalan',
+		'es' => 'Catalán',
+		'de' => 'Katalanisch',
+	)
 
 	'n0' => 'zero',
 	'n1' => 'un',
@@ -104,7 +102,10 @@ $r['ca'] = array ( // Default / male:/*{{{*/
 
 
 $r['ca_fem'] = array ( // Female variations:/*{{{*/
+
+	'@label' => 'femení',
 	'@import' => 'ca',
+
 	'n1' => 'una',
 	'n2' => 'dues',
 

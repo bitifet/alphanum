@@ -11,6 +11,13 @@
 
 $r['de'] = array ( /*{{{*/
 
+	'@label' => array (
+		'de'	=> 'Deusch',
+		'en'	=> 'German',
+		'ca'	=> 'Alemany',
+		'es'	=> 'Alemán',
+	),
+
 
 	'n0'	=> 'null',	//0
 	'n1'	=> 'eins',	//1

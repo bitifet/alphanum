@@ -11,6 +11,8 @@
 
 $r['ident'] = array ( // Default / male:/*{{{*/
 
+	'@label' => 'Ident',
+
 	'n0' => '0',
 	'n1' => '1',
 	'n2' => '2',

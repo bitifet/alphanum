@@ -5,15 +5,13 @@
 
 // Spain:
 $r['es'] = array ( // Default / male:/*{{{*/
-/*
-	'n00' => '',
-	'n000' => '',
-	'n0000' => '',
-	'n00000' => '',
-	'n000000' => '',
-	'n0000000' => '',
-	'n00000000' => '',
-*/
+
+	'@label' => array (
+		'es' => 'Castellano',
+		'ca' => 'Castellà',
+		'en' => 'Spanish',
+		'de' => 'Spanisch',
+	),
 
 	'n0' => 'cero',
 	'n1' => 'uno',
@@ -107,11 +105,24 @@ $r['es'] = array ( // Default / male:/*{{{*/
 	'n0xxxxxxxxxxxxxxxxxx' => '',
 
 );/*}}}*/
-$r['es_fem'] = array_merge ( // Female variations:/*{{{*/
-	$r['ca'],
-	array (
-		'n1' => 'una',
-	)
+
+$r['es_fem'] = array ( // Female variations:/*{{{*/
+
+	'@label' => 'Femenino',
+	'@import' => 'es',
+
+	'n1' => 'una',
+
+	'nx00' => 'cientas',
+	'nxxx' => 'cientas ',
+	'n0xx' => '',
+	'n500' => 'quinientas',
+	'n5xx' => 'quinientas ',
+	'n700' => 'setecientas',
+	'n7xx' => 'setecientas ',
+	'n900' => 'novecientas',
+	'n9xx' => 'novecientas ',
+
 );/*}}}*/
 
 return $r;
