@@ -17,7 +17,6 @@ if (
 ) die (
 	"Syntax: " . $argv[0] . " <lang_code> <start> [[end=start] inc=1]\n"
 );
-$n0 = abs(floor($n0));
 /*}}}*/
 
 $x = new alphanum(
@@ -27,12 +26,10 @@ $x = new alphanum(
 
 // $n = Stop (defaults to start):/*{{{*/
 ((@ $n = $argv[3] + 0) > $n0) || $n = $n0;
-$n = abs(floor($n));
 /*}}}*/
 
 // $n = Stop (defaults to start):/*{{{*/
 ((@ $inc = $argv[4] + 0) >= 1) || $inc = 1;
-$inc = floor($inc);
 /*}}}*/
 
 $p = 1 + floor(log($n, 10)); // Needed padding width.
@@ -48,4 +45,4 @@ if (
 	$i = $n0;
 	$i <= $n;
 	$i+= $inc
-) echo sprintf("%{$p}s -> [%s]\n", $i, $x->i2a($i));
+) echo sprintf("%{$p}s -> [%s]\n", $i, $x->f2a($i));

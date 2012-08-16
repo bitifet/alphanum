@@ -11,8 +11,12 @@ $r['ca'] = array ( // Default / male:/*{{{*/
 		'en' => 'Catalan',
 		'es' => 'Catalán',
 		'de' => 'Katalanisch',
-	)
+	),
 
+	'@decimal' => '.',
+
+	'n-' => 'menys ',
+	'n.' => ' coma ',
 	'n0' => 'zero',
 	'n1' => 'un',
 	'n2' => 'dos',

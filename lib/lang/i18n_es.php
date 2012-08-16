@@ -13,6 +13,9 @@ $r['es'] = array ( // Default / male:/*{{{*/
 		'de' => 'Spanisch',
 	),
 
+	'@decimal' => ',',
+
+	'n.' => ' coma ',
 	'n0' => 'cero',
 	'n1' => 'uno',
 	'n2' => 'dos',

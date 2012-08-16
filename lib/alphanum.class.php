@@ -13,6 +13,17 @@ class alphanum {
 	private $lang;
 
 
+	private function check_lang_rules (
+		& $r
+	) {
+
+		// Set miscellaneous default parameters if not specified:
+		@ is_null($r['@decimal']) && $r['@decimal'] = '.'; 
+		@ is_null($r['n.']) && $r['n.'] = '[comma]'; 
+		@ is_null($r['n-']) && $r['n-'] = '[minus]'; 
+
+	}
+
 	private function load_lang_rules (/*{{{*/
 		& $ruledata,
 		$lang
@@ -36,7 +47,7 @@ class alphanum {
 		) throw new Exception ("ALPHANUM: {$f} doesn't contain rules for {$lc}_{$var} variation.");
 		/*}}}*/
 
-		// Load dependencys if any:
+		// Load dependencys if any:/*{{{*/
 		if (
 			! is_array (@ $r[$lang]['@import'])
 		) {
@@ -58,13 +69,19 @@ class alphanum {
 			// Prevent from infinite loop: 
 			if (
 				isset ($ruledata[$dep])
-			) throw new Exception ("ALPHANUM: Detected cyclical dependency between {$lc}_{$var} and {$dep}"); $this->load_lang_rules ($ruledata, $dep);
+			) throw new Exception ("ALPHANUM: Detected cyclical dependency between {$lc}_{$var} and {$dep}");
+
+			$this->load_lang_rules ($ruledata, $dep);
 
 		};
 
 		// Prepend itself:
 		array_unshift ($r[$lang]['@import'], "{$lang}");
 
+		/*}}}*/
+
+		// Check for minimal defaults:
+		$this->check_lang_rules($r[$lang]);
 
 		// Load language:
 		$ruledata[$lang] = $r[$lang];
@@ -192,36 +209,50 @@ class alphanum {
 
 	public function a2i ( // Convert string to integer:/*{{{*/
 		$i,
-		$lang
+		$lang = null
 	) {
 		die ("UNIMPLEMENTED!!\n");
 	}/*}}}*/
 
 	public function sa2i ( // Search for any numeric (integer) data inside given string and convert to numeric digits:/*{{{*/
 		$i,
-		$lang
+		$lang = null
 	) {
 		die ("UNIMPLEMENTED!!\n");
 	}/*}}}*/
 
 
-		public function f2a ( // Convert float to string:/*{{{*/
-		$i,
-		$lang
+	public function f2a ( // Convert float to string:/*{{{*/
+		$f,
+		$lang = null
 	) {
-		die ("UNIMPLEMENTED!!\n");
+
+		is_null ($lang) && $lang = $this->lang;
+
+		is_numeric ($f) && $f = str_replace ('.', $this->r[$lang]['@decimal'], $f);
+
+		@ list ($i, $d) = explode ($this->r[$lang]['@decimal'], $f, 2);
+		$d += 0;
+
+		$this->apply_rule($sep, $lang, 'n.');
+		return $this->i2a($i) . $sep . $this->i2a($d);
+
+
+
+
+
 	}/*}}}*/
 
-		public function a2f ( // Convert string to float:/*{{{*/
-		$i,
-		$lang
+	public function a2f ( // Convert string to float:/*{{{*/
+		$f,
+		$lang = null
 	) {
 		die ("UNIMPLEMENTED!!\n");
 	}/*}}}*/
 
 	public function sa2f ( // Search for any numeric data (understandig floats) inside given string and convert to numeric digits:/*{{{*/
-		$i,
-		$lang
+		$f,
+		$lang = null
 	) {
 		die ("UNIMPLEMENTED!!\n");
 	}/*}}}*/
