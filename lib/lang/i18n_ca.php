@@ -76,8 +76,8 @@ $r['ca'] = array ( // Default / male:/*{{{*/
 
 	'n1000000' => 'un milió',
 	'n1xxxxxx' => 'un milió ',
-	'nx000000' => ' milions',
-	'nxxxxxxx' => ' milions ',
+	'nx000000' => array (' milions', 'ca'),
+	'nxxxxxxx' => array (' milions ', 'ca'),
 	'n0xxxxxx' => '',
 
 	/* Not used colloquially.
@@ -101,12 +101,19 @@ $r['ca'] = array ( // Default / male:/*{{{*/
 	'n0xxxxxxxxxxxxxxxxxx' => '',
 
 );/*}}}*/
-$r['ca_fem'] = array_merge ( // Female variations:/*{{{*/
-	$r['ca'],
-	array (
-		'n1' => 'una',
-		'n2' => 'dues',
-	)
+
+
+$r['ca_fem'] = array ( // Female variations:/*{{{*/
+	'@import' => 'ca',
+	'n1' => 'una',
+	'n2' => 'dues',
+
+	'nx00' => array ('-centes', 'ca'),
+	'nxxx' => array ('-centes ', 'ca'),
+
+	'n2000' => 'dos mil',
+	'n2xxx' => 'dos mil ',
+
 );/*}}}*/
 
 return $r;

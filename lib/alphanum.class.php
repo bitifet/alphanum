@@ -13,6 +13,64 @@ class alphanum {
 	private $lang;
 
 
+	private function load_lang_rules (/*{{{*/
+		& $ruledata,
+		$lang
+	) {
+
+		// Split language code from its variation if any specified:/*{{{*/
+		@ list ($lc, $var) = explode ('_', $lang, 2);
+		/*}}}*/
+
+		// Load language module performing minimum consistency tests:/*{{{*/
+		if (
+			! is_array ( $r = @ include ($f = "lang/i18n_{$lang}.php"))
+			&& ! is_array ( $r = @ include ($f = "lang/i18n_{$lc}.php"))
+		) throw new Exception ("ALPHANUM: Failed to load language {$lc}.");
+		/*}}}*/
+
+		// Check for specified variation:/*{{{*/
+		if (
+			strlen ($var)
+			&& ! @ is_array ($r["{$lc}_{$var}"])
+		) throw new Exception ("ALPHANUM: {$f} doesn't contain rules for {$lc}_{$var} variation.");
+		/*}}}*/
+
+		// Load dependencys if any:
+		if (
+			! is_array (@ $r[$lang]['@import'])
+		) {
+			if (strlen (@ $r[$lang]['@import'])) {
+				$r[$lang]['@import'] = array ($r[$lang]['@import']); // Let string for single dependency.
+			} else {
+				$r[$lang]['@import'] = array();
+			};
+		};
+
+
+		foreach (
+			$r[$lang]['@import'] as $dep
+		) if (
+			strlen ($dep = trim($dep)) // Ignore empty strings:
+			&& $dep != $lang
+		){
+
+			// Prevent from infinite loop: 
+			if (
+				isset ($ruledata[$dep])
+			) throw new Exception ("ALPHANUM: Detected cyclical dependency between {$lc}_{$var} and {$dep}"); $this->load_lang_rules ($ruledata, $dep);
+
+		};
+
+		// Prepend itself:
+		array_unshift ($r[$lang]['@import'], "{$lang}");
+
+
+		// Load language:
+		$ruledata[$lang] = $r[$lang];
+
+	}/*}}}*/
+
 	function __construct (/*{{{*/
 		$lang = array ('en'), // Language definitions to load.
 		$usecache = true
@@ -43,18 +101,7 @@ class alphanum {
 			foreach (
 				$lang
 				as $lc
-			) if (
-				// Perform minimum consistency tests:
-				is_array (
-					$r = @ include ("lang/i18n_{$lc}.php")
-				)
-				&& count ($r)
-			) {
-				// Load language:
-				$this->r = array_merge ($this->r, $r);
-			} else {
-				throw new Exception ("ALPHANUM: Failed to load language {$lc}.");
-			};
+			) $this->load_lang_rules ($this->r, $lc);
 
 			// Save to cache (if enabled):/*{{{*/
 			if (
@@ -68,7 +115,26 @@ class alphanum {
 	}/*}}}*/
 
 
-	public function i2a (// Convert integer to string: /*{{{*/
+	private function apply_rule ( // Search for translation rule:/*{{{*/
+		& $n,
+		$lang,
+		$rule
+	) {
+		foreach (
+			$this->r[$lang]['@import']
+			as $ilang
+		) if (
+			null !== $n = @ $this->r[$ilang][$rule]
+		) {
+			// Let to specify partial variation change:
+			if (is_array ($n)) list ($n, $lang) = $n;
+			return $lang;
+		};
+		return false;
+	}/*}}}*/
+
+
+	public function i2a ( // Convert integer to string: /*{{{*/
 		$i,
 		$lang = null
 	) {
@@ -91,17 +157,30 @@ class alphanum {
 		$z = str_repeat ('0', strlen($b));
 		$r = '';
 
-		if (null !== $n = @ $this->r[$lang]["n{$a}{$b}"]) {			// 3
+		if ( // 3
+			$this->apply_rule ($n, $lang, "n{$a}{$b}")
+		) {
 			$r = $n;
-		} else if ( ! preg_match ('/[1-9]/', $b) && null !== $n = @ $this->r[$lang]["nx{$z}"]) {	// 30
+		} else if ( // 30
+			! preg_match ('/[1-9]/', $b)
+			&& $this->apply_rule ($n, $lang, "nx{$z}")
+		) {
 			$r = $this->priv_i2a($a, $lang) . $n;
-		} else if (null !== $n = @ $this->r[$lang]["n{$a}{$x}"]) {	// 37
+		} else if ( // 37
+			$this->apply_rule ($n, $lang, "n{$a}{$x}")
+		) {
 			$r = $n . $this->priv_i2a($b, $lang);
-		} else if (null !== $n = @ $this->r[$lang]["n{$x}{$a}"]) {	// 17 (seventeen)
+		} else if ( // 17 (seventeen)
+			$this->apply_rule ($n, $lang, "n{$x}{$a}")
+		) {
 			$r = $this->priv_i2a($b, $lang) . $n;
-		} else if (null !== $n = @ $this->r[$lang]["nx{$x}"]) {		// 77
-			$r = $this->priv_i2a($a, $lang) . $n . $this->priv_i2a($b, $lang);
-		} else if (strlen ($b)) {
+		} else if ( // 77
+			$cl = $this->apply_rule ($n, $lang, "nx{$x}")
+		) {
+			$r = $this->priv_i2a($a, $cl) . $n . $this->priv_i2a($b, $lang);
+		} else if (
+			strlen ($b)
+		) {
 			$r = $this->priv_i2a($b, $lang, $a);
 		} else {
 			$r = "[error:$i/$a/$b]";
