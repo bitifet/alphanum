@@ -13,7 +13,7 @@ class alphanum {
 	private $lang;
 
 
-	private function check_lang_rules (
+	private function check_lang_rules (/*{{{*/
 		& $r
 	) {
 
@@ -22,12 +22,24 @@ class alphanum {
 		@ is_null($r['n.']) && $r['n.'] = '[comma]'; 
 		@ is_null($r['n-']) && $r['n-'] = '[minus]'; 
 
-	}
+		@ is_array ($r['@fractions']) || $r['@fractions'] = array();
+		ksort ($r['@fractions']); // Important.
+		foreach ( // Let to specify single number only for general use:/*{{{*/
+			$r['@fractions']
+			as $k => $v
+		) if (
+			$k != 0 // Alternative decimal part separator.
+		) is_array ($v) || $r['@fractions'][$k] = array ($v, $v);/*}}}*/
+
+
+	} /*}}}*/
 
 	private function load_lang_rules (/*{{{*/
 		& $ruledata,
 		$lang
 	) {
+
+		if (isset ($ruledata[$lang])) return false; // Prevent from infinite loop.
 
 		// Split language code from its variation if any specified:/*{{{*/
 		@ list ($lc, $var) = explode ('_', $lang, 2);
@@ -64,16 +76,8 @@ class alphanum {
 		) if (
 			strlen ($dep = trim($dep)) // Ignore empty strings:
 			&& $dep != $lang
-		){
+		) $this->load_lang_rules ($ruledata, $dep);
 
-			// Prevent from infinite loop: 
-			if (
-				isset ($ruledata[$dep])
-			) throw new Exception ("ALPHANUM: Detected cyclical dependency between {$lc}_{$var} and {$dep}");
-
-			$this->load_lang_rules ($ruledata, $dep);
-
-		};
 
 		// Prepend itself:
 		array_unshift ($r[$lang]['@import'], "{$lang}");
@@ -155,20 +159,20 @@ class alphanum {
 		$i,
 		$lang = null
 	) {
-		return $this->priv_i2a ($i, $lang); // Interface.
+		// Interface:
+		$i = preg_replace ('/^0+(\d+)$/', '\\1', $i);
+		return $this->priv_i2a ($i, $lang);
 	}
 	private function priv_i2a ( // Internal implementation:
 		$i,
 		$lang = null,
 		$c = null // Carry (internal use only)
 	) {
+		///$i .= ''; // Cast to string.
 
 		is_null ($lang) && $lang = $this->lang;
 
-		if (is_null ($c)) $i = preg_replace ('/^0+(\d+)$/', '\\1', $i);
-
 		$a = ltrim($c, '0') . $i[0];
-		////$a = $c . $i[0];
 		$b = substr ($i, 1);
 		$x = str_repeat ('x', strlen($b));
 		$z = str_repeat ('0', strlen($b));
@@ -232,13 +236,32 @@ class alphanum {
 		is_numeric ($f) && $f = str_replace ('.', $this->r[$lang]['@decimal'], $f);
 
 		@ list ($i, $d) = explode ($this->r[$lang]['@decimal'], $f, 2);
-		$d += 0;
 
+		$dlen = strlen ($d);
+		$d = ltrim($d, '0');
+
+		// Use applicable fraction units if possible:/*{{{*/
+		reset ($this->r[$lang]['@fractions']);
+		foreach (
+			$this->r[$lang]['@fractions']
+			as $digits => $frlabel
+		) if ($digits >= $dlen) {
+			$d .= str_repeat ('0', $digits - $dlen);
+			$number = ($d + 0 == 1) ? 0 : 1;
+			return $this->i2a($i)
+				. $this->r[$lang]['@fractions'][0]
+				. $this->priv_i2a($d)
+				. $frlabel[$number];
+		};/*}}}*/
+
+		// Else, say every leading '0':/*{{{*/
 		$this->apply_rule($sep, $lang, 'n.');
-		return $this->i2a($i) . $sep . $this->i2a($d);
-
-
-
+		$this->apply_rule($z, $lang, 'n.0');
+		return $this->i2a($i)
+			. $sep
+			. str_repeat ($z, $dlen - strlen ($d))
+			. $this->priv_i2a($d);
+		/*}}}*/
 
 
 	}/*}}}*/

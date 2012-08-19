@@ -14,9 +14,19 @@ $r['es'] = array ( // Default / male:/*{{{*/
 	),
 
 	'@decimal' => ',',
+	'@fractions' => array (
+		' con ',
+		1 => array (' décima',' décimas'),
+		2 => array (' centésima',' centésimas'),
+		3 => array (' milésima',' milésimas'),
+		6 => array (' millonésima',' millonésimas'),
+	),
+
 
 	'n-' => 'menos ',
 	'n.' => ' coma ',
+	'n.0' => 'cero ',
+
 	'n0' => 'cero',
 	'n1' => 'uno',
 	'n2' => 'dos',
