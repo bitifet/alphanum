@@ -40,6 +40,7 @@ class alphanum {
 	) {
 
 		if (isset ($ruledata[$lang])) return false; // Prevent from infinite loop.
+		$ruledata[$lang] = array(); // Initialyze to avoid infinite loop on (permitted) cyclic dependencys.
 
 		// Split language code from its variation if any specified:/*{{{*/
 		@ list ($lc, $var) = explode ('_', $lang, 2);
@@ -75,7 +76,7 @@ class alphanum {
 			$r[$lang]['@import'] as $dep
 		) if (
 			strlen ($dep = trim($dep)) // Ignore empty strings:
-			&& $dep != $lang
+			&& $dep != $lang // Redundant, but avoid unuseful function call.
 		) $this->load_lang_rules ($ruledata, $dep);
 
 

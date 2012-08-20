@@ -13,15 +13,10 @@ $r['ca'] = array ( // Default / male:/*{{{*/
 		'de' => 'Katalanisch',
 	),
 
-	// FIXME!!! alphanum must be cross-reference enabled.
-	// Because some language cores, like this, may need variations
-	// in some situations. In this case, for correctly speaking
-	// female fraction units.
-	//
 	// TO-DO: Implement the use of variation specification in
 	// fraction units.
 	//
-	////'@import' => 'ca_fem', // Usat per fraccions.
+	'@import' => 'ca_fem', // Usat per fraccions.
 
 	'@decimal' => '.',
 
