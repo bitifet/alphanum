@@ -249,10 +249,10 @@ class alphanum {
 		) if ($digits >= $dlen) {
 			$d .= str_repeat ('0', $digits - $dlen);
 			$number = ($d + 0 == 1) ? 0 : 1;
-			return $this->i2a($i)
-				. $this->r[$lang]['@fractions'][0]
-				. $this->priv_i2a($d)
-				. $frlabel[$number];
+			return $this->i2a($i) // Integer part.
+				. $this->r[$lang]['@fractions'][0] // Alternative separator.
+				. $this->priv_i2a($d, @$frlabel[2]) // Decimal translation in given language (null => default)
+				. $frlabel[$number]; // Label in correct number.
 		};/*}}}*/
 
 		// Else, say every leading '0':/*{{{*/

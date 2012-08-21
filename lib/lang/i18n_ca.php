@@ -13,14 +13,9 @@ $r['ca'] = array ( // Default / male:/*{{{*/
 		'de' => 'Katalanisch',
 	),
 
-	// TO-DO: Implement the use of variation specification in
-	// fraction units.
-	//
 	'@import' => 'ca_fem', // Usat per fraccions.
 
 	'@decimal' => '.',
-
-
 
 	'@fractions' => array (
 		' amb ',

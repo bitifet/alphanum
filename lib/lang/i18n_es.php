@@ -13,13 +13,16 @@ $r['es'] = array ( // Default / male:/*{{{*/
 		'de' => 'Spanisch',
 	),
 
+	'@import' => 'es_fem', // Usado para fracciones.
+
 	'@decimal' => ',',
+
 	'@fractions' => array (
 		' con ',
-		1 => array (' décima',' décimas'),
-		2 => array (' centésima',' centésimas'),
-		3 => array (' milésima',' milésimas'),
-		6 => array (' millonésima',' millonésimas'),
+		1 => array (' décima',' décimas', 'es_fem'),
+		2 => array (' centésima',' centésimas', 'es_fem'),
+		3 => array (' milésima',' milésimas', 'es_fem'),
+		6 => array (' millonésima',' millonésimas', 'es_fem'),
 	),
 
 
