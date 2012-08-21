@@ -14,22 +14,28 @@ class alphanum {
 
 
 	private function check_lang_rules (/*{{{*/
-		& $r
+		& $r,
+		$lang
 	) {
 
-		// Set miscellaneous default parameters if not specified:
-		@ is_null($r['@decimal']) && $r['@decimal'] = '.'; 
-		@ is_null($r['n.']) && $r['n.'] = '[comma]'; 
-		@ is_null($r['n-']) && $r['n-'] = '[minus]'; 
-
-		@ is_array ($r['@fractions']) || $r['@fractions'] = array();
-		ksort ($r['@fractions']); // Important.
-		foreach ( // Let to specify single number only for general use:/*{{{*/
-			$r['@fractions']
-			as $k => $v
-		) if (
-			$k != 0 // Alternative decimal part separator.
-		) is_array ($v) || $r['@fractions'][$k] = array ($v, $v);/*}}}*/
+		if (
+			// (Seems) correctly specified:
+			@ is_array ($r['@fractions'])
+		) {
+			// Sort and sanityze:
+			ksort ($r['@fractions']); // Important.
+			foreach ( // Let to specify single number only for general use:/*{{{*/
+				$r['@fractions']
+				as $k => $v
+			) if (
+				$k != 0 // Alternative decimal part separator.
+			) is_array ($v) || $r['@fractions'][$k] = array ($v, $v);/*}}}*/
+		} else if (
+			// Garbage:
+			isset ($r['@fractions'])
+		) throw new Exception (
+			"ALPHANUM: Malformed @fractions specification for {$lang}"
+		);
 
 
 	} /*}}}*/
@@ -86,7 +92,7 @@ class alphanum {
 		/*}}}*/
 
 		// Check for minimal defaults:
-		$this->check_lang_rules($r[$lang]);
+		$this->check_lang_rules($r[$lang], $lang);
 
 		// Load language:
 		$ruledata[$lang] = $r[$lang];
@@ -119,7 +125,16 @@ class alphanum {
 			// Not already cached.
 			! is_array ($this->r)
 		) {
-			$this->r = array();
+
+			// Initialyze and set miscellaneous default parameters/*{{{*/
+			$this->r = array(
+				'_default_' => array (
+					'@decimal' => '.',
+					'n.' => '[comma]',
+					'n-' => '[minus]',
+				)
+			);/*}}}*/
+
 			foreach (
 				$lang
 				as $lc
@@ -137,7 +152,22 @@ class alphanum {
 	}/*}}}*/
 
 
-	private function apply_rule ( // Search for translation rule:/*{{{*/
+	private function get_rule ( // Return requested rule untouched:/*{{{*/
+		$rule, // Usually '@' rules which has variable structure.
+		$lang
+	) {
+		foreach (
+			$this->r[$lang]['@import']
+			as $ilang
+		) if (
+			null !== $data = @ $this->r[$ilang][$rule]
+		) {
+			return $data;
+		};
+		return @ $this->r['_default_'][$rule]; // Return default value (if defined) or null.
+	}/*}}}*/
+
+	private function apply_rule ( // Search for and apply translation rule:/*{{{*/
 		& $n,
 		$lang,
 		$rule
@@ -233,27 +263,30 @@ class alphanum {
 	) {
 
 		is_null ($lang) && $lang = $this->lang;
+		$dec = $this->get_rule ('@decimal', $lang);
+		is_numeric ($f) && $f = str_replace ('.', $dec, $f);
 
-		is_numeric ($f) && $f = str_replace ('.', $this->r[$lang]['@decimal'], $f);
-
-		@ list ($i, $d) = explode ($this->r[$lang]['@decimal'], $f, 2);
+		@ list ($i, $d) = explode ($dec, $f, 2);
 
 		$dlen = strlen ($d);
 		$d = ltrim($d, '0');
 
 		// Use applicable fraction units if possible:/*{{{*/
-		reset ($this->r[$lang]['@fractions']);
+		$fractions = $this->get_rule ('@fractions', $lang);
+		$sep = isset ($fractions[0]) ? $fractions[0] : $this->get_rule('n.', $lang); // Alternative separator.
 		foreach (
-			$this->r[$lang]['@fractions']
+			$fractions
 			as $digits => $frlabel
 		) if ($digits >= $dlen) {
 			$d .= str_repeat ('0', $digits - $dlen);
 			$number = ($d + 0 == 1) ? 0 : 1;
 			return $this->i2a($i) // Integer part.
-				. $this->r[$lang]['@fractions'][0] // Alternative separator.
+				. $sep
 				. $this->priv_i2a($d, @$frlabel[2]) // Decimal translation in given language (null => default)
 				. $frlabel[$number]; // Label in correct number.
 		};/*}}}*/
+
+		var_dump($fractions);
 
 		// Else, say every leading '0':/*{{{*/
 		$this->apply_rule($sep, $lang, 'n.');
