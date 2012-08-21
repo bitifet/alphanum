@@ -105,14 +105,14 @@ $r['ca'] = array ( // Default / male:/*{{{*/
 
 	'n1000000000000' => 'un bilió',
 	'n1xxxxxxxxxxxx' => 'un bilió ',
-	'nx000000000000' => ' bilions',
-	'nxxxxxxxxxxxxx' => ' bilions ',
+	'nx000000000000' => array (' bilions', 'ca'),
+	'nxxxxxxxxxxxxx' => array (' bilions ', 'ca'),
 	'n0xxxxxxxxxxxx' => '',
 
 	'n1000000000000000000' => 'un trilió',
 	'n1xxxxxxxxxxxxxxxxxx' => 'un trilió ',
-	'nx000000000000000000' => ' trilions',
-	'nxxxxxxxxxxxxxxxxxxx' => ' trilions ',
+	'nx000000000000000000' => array (' trilions', 'ca'),
+	'nxxxxxxxxxxxxxxxxxxx' => array (' trilions ', 'ca'),
 	'n0xxxxxxxxxxxxxxxxxx' => '',
 
 );/*}}}*/

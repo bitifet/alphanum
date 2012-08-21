@@ -40,7 +40,7 @@ if (
 	&& ($n0 >= 100000000000000)
 ) {
 	// Let to test big numbers individually (alphanum doesn't threat floats propperly)
-	echo "{$argv[2]} -> [" . $x->i2a($argv[2]) . "]\n";
+	echo "{$argv[2]} -> [" . $x->f2a($argv[2]) . "]\n";
 } else for (
 	$i = $n0;
 	$i <= $n;

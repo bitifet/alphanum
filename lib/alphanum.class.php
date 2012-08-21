@@ -160,9 +160,10 @@ class alphanum {
 			$this->r[$lang]['@import']
 			as $ilang
 		) if (
-			null !== $data = @ $this->r[$ilang][$rule]
+			isset ($this->r[$ilang][$rule])
 		) {
-			return $data;
+			if (is_null ($this->r[$ilang][$rule])) break; // Expicit null breaks inherition.
+			return $this->r[$ilang][$rule];
 		};
 		return @ $this->r['_default_'][$rule]; // Return default value (if defined) or null.
 	}/*}}}*/
@@ -176,13 +177,21 @@ class alphanum {
 			$this->r[$lang]['@import']
 			as $ilang
 		) if (
-			null !== $n = @ $this->r[$ilang][$rule]
+			isset ($this->r[$ilang][$rule])
 		) {
-			// Let to specify partial variation change:
-			if (is_array ($n)) list ($n, $lang) = $n;
+			$n = $this->r[$ilang][$rule];
+			if (is_null ($this->r[$ilang][$rule])) break; // Explicit null breaks inherition.
+			if (is_array ($n)) list ($n, $lang) = $n; // Let to specify partial variation change.
 			return $lang;
 		};
-		return false;
+
+		if (isset ($this->r['_default_'][$rule])) { // Use default value if defined:
+			$n = @ $this->r['_default_'][$rule];
+			if (is_array ($n)) list ($n, $lang) = $n; // Let to specify partial variation change.
+			return $lang;
+		} else { // Return boolean false if no default value:
+			return false;
+		};
 	}/*}}}*/
 
 
@@ -267,6 +276,7 @@ class alphanum {
 		is_numeric ($f) && $f = str_replace ('.', $dec, $f);
 
 		@ list ($i, $d) = explode ($dec, $f, 2);
+		if (is_null ($d)) return $this->i2a($i);
 
 		$dlen = strlen ($d);
 		$d = ltrim($d, '0');
@@ -286,7 +296,6 @@ class alphanum {
 				. $frlabel[$number]; // Label in correct number.
 		};/*}}}*/
 
-		var_dump($fractions);
 
 		// Else, say every leading '0':/*{{{*/
 		$this->apply_rule($sep, $lang, 'n.');

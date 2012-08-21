@@ -13,7 +13,10 @@ $r['es'] = array ( // Default / male:/*{{{*/
 		'de' => 'Spanisch',
 	),
 
-	'@import' => 'es_fem', // Usado para fracciones.
+	'@import' => array (
+		'es_fem', // Usado para fracciones.
+		'es_det', // Usado para múltiplos de miles, millones...
+	),
 
 	'@decimal' => ',',
 
@@ -85,23 +88,23 @@ $r['es'] = array ( // Default / male:/*{{{*/
 
 	'n1000' => 'mil',
 	'n1xxx' => 'mil ',
-	'nx000' => ' mil',
-	'nxxxx' => ' mil ',
+	'nx000' => array (' mil', 'es_det'),
+	'nxxxx' => array (' mil ', 'es_det'),
 	'n0xxx' => '',
 
 	'n1000000' => 'un millón',
 		'r1000000' => 'un mill[oó]n',
 	'n1xxxxxx' => 'un millón ',
 		'r1xxxxxx' => 'un mill[oó]n ',
-	'nx000000' => ' miliones',
-	'nxxxxxxx' => ' miliones ',
+	'nx000000' => array (' miliones', 'es_det'),
+	'nxxxxxxx' => array (' miliones ', 'es_det'),
 	'n0xxxxxx' => '',
 
 	/* Not used colloquially.
 	'n1000000000' => 'un millardo',
 	'n1xxxxxxxxx' => 'un millardo ',
-	'nx000000000' => ' millardos',
-	'nxxxxxxxxxx' => ' millardos ',
+	'nx000000000' => array (' millardos', 'es_det'),
+	'nxxxxxxxxxx' => array (' millardos ', 'es_det'),
 	'n0xxxxxxxxx' => '',
 	 */
 
@@ -109,24 +112,33 @@ $r['es'] = array ( // Default / male:/*{{{*/
 		'r1000000000000' => 'un bill[oó]n',
 	'n1xxxxxxxxxxxx' => 'un billón ',
 		'r1xxxxxxxxxxxx' => 'un bill[oó]n ',
-	'nx000000000000' => ' billones',
-	'nxxxxxxxxxxxxx' => ' billones ',
+	'nx000000000000' => array (' billones', 'es_det'),
+	'nxxxxxxxxxxxxx' => array (' billones ', 'es_det'),
 	'n0xxxxxxxxxxxx' => '',
 
 	'n1000000000000000000' => 'un trillón',
 		'r1000000000000000000' => 'un trill[oó]n',
 	'n1xxxxxxxxxxxxxxxxxx' => 'un trillón ',
 		'r1xxxxxxxxxxxxxxxxxx' => 'un trill[oó]n ',
-	'nx000000000000000000' => ' trillones',
-	'nxxxxxxxxxxxxxxxxxxx' => ' trillones ',
+	'nx000000000000000000' => array (' trillones', 'es_det'),
+	'nxxxxxxxxxxxxxxxxxxx' => array (' trillones ', 'es_det'),
 	'n0xxxxxxxxxxxxxxxxxx' => '',
 
 );/*}}}*/
 
+$r['es_det'] = array (
+	'@label' => 'Determinante',
+	'@import' => 'es',
+
+	'n1'	=> 'un',
+);
+
 $r['es_fem'] = array ( // Female variations:/*{{{*/
 
 	'@label' => 'Femenino',
-	'@import' => 'es',
+	'@import' => array (
+		'es',
+	),
 
 	'n1' => 'una',
 
@@ -141,5 +153,6 @@ $r['es_fem'] = array ( // Female variations:/*{{{*/
 	'n9xx' => 'novecientas ',
 
 );/*}}}*/
+
 
 return $r;
