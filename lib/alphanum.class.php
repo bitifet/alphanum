@@ -168,21 +168,38 @@ class alphanum {
 		return @ $this->r['_default_'][$rule]; // Return default value (if defined) or null.
 	}/*}}}*/
 
+	private function rulable ( // Check for and apply indirections:/*{{{*/
+		$rule,
+		$lang
+	) {
+
+		if (
+			in_array (@ $rule[0], array ('$', '@')) // User variable or formal parameter.
+		) {
+			$rule = $this->get_rule ($rule, $lang);
+		};
+		return $rule;
+	}/*}}}*/
+
 	private function apply_rule ( // Search for and apply translation rule:/*{{{*/
 		& $n,
 		$lang,
 		$rule
 	) {
+		$lang0 = $lang;
 		foreach (
 			$this->r[$lang]['@import']
 			as $ilang
-		) if (
-			isset ($this->r[$ilang][$rule])
 		) {
-			$n = $this->r[$ilang][$rule];
-			if (is_null ($this->r[$ilang][$rule])) break; // Explicit null breaks inherition.
-			if (is_array ($n)) list ($n, $lang) = $n; // Let to specify partial variation change.
-			return $lang;
+			$ilang = $this->rulable($ilang, $lang);
+			if (
+				isset ($this->r[$ilang][$rule])
+			) {
+				$n = $this->r[$ilang][$rule];
+				if (is_null ($this->r[$ilang][$rule])) break; // Explicit null breaks inherition.
+				if (is_array ($n)) list ($n, $lang) = $n; // Let to specify partial variation change.
+				return $this->rulable ($lang, $lang0);
+			};
 		};
 
 		if (isset ($this->r['_default_'][$rule])) { // Use default value if defined:
@@ -204,48 +221,90 @@ class alphanum {
 		return $this->priv_i2a ($i, $lang);
 	}
 	private function priv_i2a ( // Internal implementation:
-		$i,
+		$i, // Integer input.
 		$lang = null,
-		$c = null // Carry (internal use only)
+		$c = null // Left carry (internal use only)
+		// 
+		// Positional - recursive integer to text translation function.
+		// To understand this algoritm you must take in mind below digits structure (without spaces):
+		//
+		// 	[Carried dígits] [Left-most digit] [Rest of digits]
+		//
+		// 	WHERE:
+		//
+		// 		Left-most ditit: The (1) digit which is being considered (current position).
+		//
+		// 		Carried digits: Left-most digits which couldn't build matching pattern in previous recursion.
+		// 			They are automatically concatenated with Left-most digit in {$a} (number's left side considered from current position.
+		//
+		// 		Rest of digits: Digits to be tested with number's left side ($a) for:
+		// 			* Full match: Exists exact 'n{$a}{$b}' (or 'n_{$a}{$x}') pattern.
+		// 			* 0-match: Exists 'n{$a}{$z}' pattern where $z is $b-length pattern of '0's.
+		// 			* x-match: Exists 'n{$a}{$x}' pattern where $z is $b-length pattern of 'x's.
+
 	) {
 		///$i .= ''; // Cast to string.
 
+		// Misc initializations:
 		is_null ($lang) && $lang = $this->lang;
-
-		$a = ltrim($c, '0') . $i[0];
-		$b = substr ($i, 1);
-		$x = str_repeat ('x', strlen($b));
-		$z = str_repeat ('0', strlen($b));
 		$r = '';
 
-		if ( // 3
-			$this->apply_rule ($n, $lang, "n{$a}{$b}")
+		// Separate first digit plus right carry if any ($a) from the rest ($b):
+		$a = ltrim($c, '0_') . $i[0]; // [Non-Zero carried digits]+[Input's left-most digit]
+		$b = substr ($i, 1); // [Input without left-most digit]
+
+		// Build $b-width 'x' and '0' patterns:
+		$x = str_repeat ('x', strlen($b)); // b-width 'x' pattern.
+		$z = str_repeat ('0', strlen($b)); // b-width '0' pattern.
+
+
+		// Recursively iterate thought many patterns:
+		// =========================================
+
+		if ( // Full match "{$a}{$b}": (1, 4, or 1428 if necessary; also compound _1, _3, _234...)/*{{{*/
+			$this->apply_rule ($n, $lang, "n{$i}") // Can be 'n_{$i}' ('_' unparsed).
+			|| $this->apply_rule ($n, $lang, "n{$a}{$b}") // Failback for if $i contains '_'.
 		) {
 			$r = $n;
-		} else if ( // 30
+		} /*}}}*/
+
+		else if ( // Only '0's at right side ("a b": 1 0, 3 00, 2 7000...)/*{{{*/
 			! preg_match ('/[1-9]/', $b)
 			&& $this->apply_rule ($n, $lang, "nx{$z}")
 		) {
 			$r = $this->priv_i2a($a, $lang) . $n;
-		} else if ( // 37
+		} /*}}}*/
+
+		else if ( // Non '00...' right side (3 7, 2 343, 34 300...)/*{{{*/
 			$this->apply_rule ($n, $lang, "n{$a}{$x}")
 		) {
-			$r = $n . $this->priv_i2a($b, $lang);
-		} else if ( // 17 (seventeen)
+			$r = $n . $this->priv_i2a("_{$b}", $lang); // Prepend '_' to select compound version if any...
+		} /*}}}*/
+
+		else if ( // Reversed-speaking "{$a}xxx" patterns (English 1 7: 'Seven' + 'teen')./*{{{*//*{{{*/
 			$this->apply_rule ($n, $lang, "n{$x}{$a}")
 		) {
 			$r = $this->priv_i2a($b, $lang) . $n;
-		} else if ( // 77
+		} /*}}}*//*}}}*/
+
+		else if ( // Non reversed-speaking "{$a}xxx" patterns (English 2 20 or catalan 1 7)./*{{{*/
 			$cl = $this->apply_rule ($n, $lang, "nx{$x}")
 		) {
 			$r = $this->priv_i2a($a, $cl) . $n . $this->priv_i2a($b, $lang);
-		} else if (
+		}/*}}}*/
+
+		else if ( // $a unmatched but $b not yet empty:/*{{{*/
 			strlen ($b)
 		) {
+			// Carry $a and try again with $b:
 			$r = $this->priv_i2a($b, $lang, $a);
-		} else {
+		}/*}}}*/
+
+		else { // No applicable pattern matching:/*{{{*/
 			$r = "[error:$i/$a/$b]";
-		};
+		};/*}}}*/
+
+		// =========================================
 
 		return $r;
 

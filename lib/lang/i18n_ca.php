@@ -1,4 +1,10 @@
 <?php
+# vim configuration:
+# vim:foldmethod=marker
+#
+# HINT: If you are using vim, foldmethod=marker is automatically enabled.
+#     Use 'za' to expand/hide folds.
+#     Type :help folding to learn more about vim folding.
 
 // Catalan:
 // =======
@@ -12,6 +18,7 @@ $r['ca'] = array ( // Default / male:/*{{{*/
 		'es' => 'Catalán',
 		'de' => 'Katalanisch',
 	),
+	'$units' => 'ca',
 
 	'@import' => 'ca_fem', // Usat per fraccions.
 
@@ -77,16 +84,16 @@ $r['ca'] = array ( // Default / male:/*{{{*/
 	'n90' => 'noranta',
 	'n9x' => 'noranta-',
 
-	'n100' => 'cent',
-	'n1xx' => 'cent ',
-	'nx00' => '-cents',
-	'nxxx' => '-cents ',
+	'n100' => array ('cent', '$units'),
+	'n1xx' => array ('cent ', '$units'),
+	'nx00' => array ('-cents', '$units'),
+	'nxxx' => array ('-cents ', '$units'),
 	'n0xx' => '',
 
 	'n1000' => 'mil',
 	'n1xxx' => 'mil ',
-	'nx000' => ' mil',
-	'nxxxx' => ' mil ',
+	'nx000' => array (' mil', '$units'),
+	'nxxxx' => array (' mil ', '$units'),
 	'n0xxx' => '',
 
 	'n1000000' => 'un milió',
@@ -118,10 +125,11 @@ $r['ca'] = array ( // Default / male:/*{{{*/
 );/*}}}*/
 
 
-$r['ca_fem'] = array ( // Female variations:/*{{{*/
+$r['ca_fem'] = array ( // Female variation:/*{{{*/
 
 	'@label' => 'femení',
 	'@import' => 'ca',
+	'$units' => 'ca_fem',
 
 	'n1' => 'una',
 	'n2' => 'dues',
@@ -131,6 +139,79 @@ $r['ca_fem'] = array ( // Female variations:/*{{{*/
 
 	'n2000' => 'dos mil',
 	'n2xxx' => 'dos mil ',
+
+);/*}}}*/
+
+
+$r['ca_ord'] = array ( // Ordinal (male) variation:/*{{{*/
+
+	'@label' => 'ordinals',
+	'@import' => 'ca',
+
+	'n1' => 'primer',
+	'n2' => 'segon',
+	'n3' => 'tercer',
+	'n4' => 'quart',
+	'n5' => 'cinquè',
+	'n6' => 'sisè',
+	'n7' => 'setè',
+	'n8' => 'vuitè',
+	'n9' => 'novè',
+
+	'n10' => 'desè',
+	'n11' => 'onzè',
+	'n12' => 'dotzè',
+	'n13' => 'tretzè',
+	'n14' => 'catorzè',
+	'n15' => 'quinzè',
+	'n16' => 'setzè',
+	'n17' => 'dissetè',
+	'n18' => 'divuitè',
+	'n19' => 'dinovè',
+	'n20' => 'vintè',
+
+	'n_1' => 'unè',
+	'n_2' => 'dosè',
+	'n_3' => 'tresé',
+	'n_4' => 'quatrè',
+
+);/*}}}*/
+
+
+$r['ca_ord_fem'] = array ( // Ordinal (male) variation:/*{{{*/
+
+	'@label' => 'ordinals femenins',
+	'@import' => array (
+		'ca_fem',
+		'ca'
+	),
+
+	'n1' => 'primera',
+	'n2' => 'segona',
+	'n3' => 'tercera',
+	'n4' => 'quarta',
+	'n5' => 'cinquena',
+	'n6' => 'sisena',
+	'n7' => 'setena',
+	'n8' => 'vuitena',
+	'n9' => 'novena',
+
+	'n10' => 'desena',
+	'n11' => 'onzena',
+	'n12' => 'dotzena',
+	'n13' => 'tretzena',
+	'n14' => 'catorzena',
+	'n15' => 'quinzena',
+	'n16' => 'setzena',
+	'n17' => 'dissetena',
+	'n18' => 'divuitena',
+	'n19' => 'dinovena',
+	'n20' => 'vintena',
+
+	'n_1' => 'unena',
+	'n_2' => 'dosena',
+	'n_3' => 'tresena',
+	'n_4' => 'quatrena',
 
 );/*}}}*/
 
