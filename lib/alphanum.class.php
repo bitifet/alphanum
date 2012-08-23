@@ -186,24 +186,33 @@ class alphanum {
 		$lang,
 		$rule
 	) {
+
 		$lang0 = $lang;
+
+		// Build uncompound alternative for compound patterns:
+		$uncompound = $rule[1] == '_' ? $rule[0] . substr ($rule, 2) : false;
+
 		foreach (
 			$this->r[$lang]['@import']
 			as $ilang
 		) {
 			$ilang = $this->rulable($ilang, $lang);
 			if (
-				isset ($this->r[$ilang][$rule])
+				isset ($this->r[$ilang][$usedrule = $rule])
+				|| $uncompound && isset ($this->r[$ilang][$usedrule = $uncompound])
 			) {
-				$n = $this->r[$ilang][$rule];
-				if (is_null ($this->r[$ilang][$rule])) break; // Explicit null breaks inherition.
+				$n = $this->r[$ilang][$usedrule];
+				if (is_null ($this->r[$ilang][$usedrule])) break; // Explicit null breaks inherition.
 				if (is_array ($n)) list ($n, $lang) = $n; // Let to specify partial variation change.
 				return $this->rulable ($lang, $lang0);
 			};
 		};
 
-		if (isset ($this->r['_default_'][$rule])) { // Use default value if defined:
-			$n = @ $this->r['_default_'][$rule];
+		if (
+			isset ($this->r['_default_'][$rule])
+			|| $uncompound && isset ($this->r['_default_'][$usedrule = $uncompound])
+		) { // Use default value if defined:
+			$n = @ $this->r['_default_'][$usedrule];
 			if (is_array ($n)) list ($n, $lang) = $n; // Let to specify partial variation change.
 			return $lang;
 		} else { // Return boolean false if no default value:
@@ -223,7 +232,7 @@ class alphanum {
 	private function priv_i2a ( // Internal implementation:
 		$i, // Integer input.
 		$lang = null,
-		$c = null // Left carry (internal use only)
+		$carry = null // Left carry (internal use only)
 		// 
 		// Positional - recursive integer to text translation function.
 		// To understand this algoritm you must take in mind below digits structure (without spaces):
@@ -250,7 +259,8 @@ class alphanum {
 		$r = '';
 
 		// Separate first digit plus right carry if any ($a) from the rest ($b):
-		$a = ltrim($c, '0_') . $i[0]; // [Non-Zero carried digits]+[Input's left-most digit]
+		$c = $i[0] == '_' ? '_' : ''; $i = ltrim ($i, '_'); // Capture compound flag.
+		$a = ltrim($carry, '0') . $i[0]; // [Non-Zero carried digits]+[Input's left-most digit]
 		$b = substr ($i, 1); // [Input without left-most digit]
 
 		// Build $b-width 'x' and '0' patterns:
@@ -262,8 +272,7 @@ class alphanum {
 		// =========================================
 
 		if ( // Full match "{$a}{$b}": (1, 4, or 1428 if necessary; also compound _1, _3, _234...)/*{{{*/
-			$this->apply_rule ($n, $lang, "n{$i}") // Can be 'n_{$i}' ('_' unparsed).
-			|| $this->apply_rule ($n, $lang, "n{$a}{$b}") // Failback for if $i contains '_'.
+			$this->apply_rule ($n, $lang, "n{$c}{$a}{$b}")
 		) {
 			$r = $n;
 		} /*}}}*/
@@ -276,19 +285,19 @@ class alphanum {
 		} /*}}}*/
 
 		else if ( // Non '00...' right side (3 7, 2 343, 34 300...)/*{{{*/
-			$this->apply_rule ($n, $lang, "n{$a}{$x}")
+			$this->apply_rule ($n, $lang, "n{$c}{$a}{$x}")
 		) {
 			$r = $n . $this->priv_i2a("_{$b}", $lang); // Prepend '_' to select compound version if any...
 		} /*}}}*/
 
 		else if ( // Reversed-speaking "{$a}xxx" patterns (English 1 7: 'Seven' + 'teen')./*{{{*//*{{{*/
-			$this->apply_rule ($n, $lang, "n{$x}{$a}")
+			$this->apply_rule ($n, $lang, "n{$c}{$x}{$a}")
 		) {
 			$r = $this->priv_i2a($b, $lang) . $n;
 		} /*}}}*//*}}}*/
 
 		else if ( // Non reversed-speaking "{$a}xxx" patterns (English 2 20 or catalan 1 7)./*{{{*/
-			$cl = $this->apply_rule ($n, $lang, "nx{$x}")
+			$cl = $this->apply_rule ($n, $lang, "n{$c}x{$x}")
 		) {
 			$r = $this->priv_i2a($a, $cl) . $n . $this->priv_i2a($b, $lang);
 		}/*}}}*/
@@ -297,7 +306,7 @@ class alphanum {
 			strlen ($b)
 		) {
 			// Carry $a and try again with $b:
-			$r = $this->priv_i2a($b, $lang, $a);
+			$r = $this->priv_i2a("{$c}$b", $lang, $a);
 		}/*}}}*/
 
 		else { // No applicable pattern matching:/*{{{*/
