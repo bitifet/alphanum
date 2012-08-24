@@ -45,10 +45,13 @@ PROJECT STRUCTURE
   * ./LICENSE *Licensing terms (GPLv3)*
   * ./doc/
   * ./lib/
+
     * alphanum.class.php *Alphanum library.*
     * lang/ *Language and variations specification files.*
     * cache/ *Used for language structures caching.*
+
   * ./tools/
+
     * a2i.php *Tool to test text-to-number conversion.*
 
 
