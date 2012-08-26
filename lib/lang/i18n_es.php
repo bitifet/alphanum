@@ -161,4 +161,147 @@ $r['es_fem'] = array ( // Female variations:/*{{{*/
 );/*}}}*/
 
 
+$r['es_ord'] = array ( // Ordinal (male) variation:/*{{{*/
+
+	'@label' => 'ordinales',
+	'@import' => 'es',
+
+	'n1' => 'primero',
+	'n2' => 'segundo',
+	'n3' => 'tercero',
+	'n4' => 'cuarto',
+	'n5' => 'quinto',
+	'n6' => 'sexto',
+	'n7' => 'séptimo',
+	'n8' => 'octavo',
+	'n9' => 'noveno',
+
+	'n11' => 'undécimo',
+	'n12' => 'duodécimo',
+
+	'n13' => false,
+	'n14' => false,
+	'n15' => false,
+
+	'n10' => 'décimo',
+	'n1x' => 'decimo ',
+	'n20' => 'vigésimo',
+	'n2x' => 'vigésimo ',
+	'n30' => 'trigésimo',
+	'n3x' => 'trigésimo ',
+	'n40' => 'cuadragésimo',
+	'n4x' => 'cuadragésimo ',
+	'n50' => 'quincuagésimo',
+	'n5x' => 'quincuagésimo ',
+	'n60' => 'sexagésimo',
+	'n6x' => 'sexagésimo ',
+	'n70' => 'septuagésimo',
+	'n7x' => 'septuagésimo ',
+	'n80' => 'octogésimo',
+	'n8x' => 'octogésimo ',
+	'n90' => 'nonagésimo',
+	'n9x' => 'nonagésimo ',
+
+	'n100' => 'centésimo',
+	'n1xx' => 'centésimo ',
+	'n200' => 'duocentésimo',
+	'n2xx' => 'duocentésimo ',
+	'n300' => 'tricentésimo',
+	'n3xx' => 'tricentésimo ',
+	'n400' => 'cadrigentésimo',
+	'n4xx' => 'cadrigentésimo ',
+	'n500' => 'quingentésimo',
+	'n5xx' => 'quingentésimo ',
+	'n600' => 'sexcentésimo',
+	'n6xx' => 'sexcentésimo ',
+	'n700' => 'septigentésimo',
+	'n7xx' => 'septigentésimo ',
+	'n800' => 'octigentésimo',
+	'n8xx' => 'octigentésimo ',
+	'n900' => 'nonigentésimo',
+	'n9xx' => 'nonigentésimo ',
+
+
+	'n1000' => 'milésimo',
+	'n1xxx' => 'milésimo ',
+	'nxxxx' => array ('milésimo ', 'es'),
+	'n1000000' => 'millonésimo',
+	'n1xxxxxx' => 'millonésimo ',
+	'nxxxxxxx' => array ('millonésimo ', 'es'),
+
+
+);/*}}}*/
+
+$r['es_ord_fem'] = array ( // Ordinal (male) variation:/*{{{*/
+
+	'@label' => 'ordinales femeninos',
+	'@import' => array (
+		'es_fem',
+		'es'
+	),
+
+	'n1' => 'primera',
+	'n2' => 'segunda',
+	'n3' => 'tercera',
+	'n4' => 'cuarta',
+	'n5' => 'quinta',
+	'n6' => 'sexta',
+	'n7' => 'séptima',
+	'n8' => 'octava',
+	'n9' => 'novena',
+
+	'n11' => 'undécima',
+	'n12' => 'duodécima',
+
+	'n13' => false,
+	'n14' => false,
+	'n15' => false,
+
+	'n10' => 'décima',
+	'n1x' => 'decima ',
+	'n20' => 'vigésima',
+	'n2x' => 'vigésima ',
+	'n30' => 'trigésima',
+	'n3x' => 'trigésima ',
+	'n40' => 'cuadragésima',
+	'n4x' => 'cuadragésima ',
+	'n50' => 'quincuagésima',
+	'n5x' => 'quincuagésima ',
+	'n60' => 'sexagésima',
+	'n6x' => 'sexagésima ',
+	'n70' => 'septuagésima',
+	'n7x' => 'septuagésima ',
+	'n80' => 'octogésima',
+	'n8x' => 'octogésima ',
+	'n90' => 'nonagésima',
+	'n9x' => 'nonagésima ',
+
+	'n100' => 'centésima',
+	'n1xx' => 'centésima ',
+	'n200' => 'duocentésima',
+	'n2xx' => 'duocentésima ',
+	'n300' => 'tricentésima',
+	'n3xx' => 'tricentésima ',
+	'n400' => 'cadrigentésima',
+	'n4xx' => 'cadrigentésima ',
+	'n500' => 'quingentésima',
+	'n5xx' => 'quingentésima ',
+	'n600' => 'sexcentésima',
+	'n6xx' => 'sexcentésima ',
+	'n700' => 'septigentésima',
+	'n7xx' => 'septigentésima ',
+	'n800' => 'octigentésima',
+	'n8xx' => 'octigentésima ',
+	'n900' => 'nonigentésima',
+	'n9xx' => 'nonigentésima ',
+
+	'n1000' => 'milésima',
+	'n1xxx' => 'milésima ',
+	'nxxxx' => array ('milésima ', 'es'),
+	'n1000000' => 'millonésima',
+	'n1xxxxxx' => 'millonésima ',
+	'nxxxxxxx' => array ('millonésima ', 'es'),
+
+);/*}}}*/
+
 return $r;

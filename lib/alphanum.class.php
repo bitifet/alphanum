@@ -215,7 +215,7 @@ class alphanum {
 				|| $uncompound && isset ($this->r[$ilang][$usedrule = $uncompound])
 			) {
 				$n = $this->r[$ilang][$usedrule];
-				if (is_null ($this->r[$ilang][$usedrule])) break; // Explicit null breaks inherition.
+				if (false === $this->r[$ilang][$usedrule]) break; // Explicit null breaks inherition.
 				if (is_array ($n)) list ($n, $lang) = $n; // Let to specify partial variation change.
 				return $this->rulable ($lang, $lang0);
 			};

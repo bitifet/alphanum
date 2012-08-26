@@ -101,15 +101,18 @@ Nowadays most complete language (and the only one with ordinal variations) is ca
 ----
 
   * i2a, es, 13, trece
+  * i2a, es_ord, 13, trece
   * i2a, es, 230007234, doscientos treinta miliones siete mil doscientos treinta y cuatro
+  * i2a, es_ord, 230007234, doscientos treintamillonésimo sietemilésimo duocentésimo trigésimo cuarto
+  * i2a, es_ord_fem, 230007234, doscientos treintamillonésima sietemilésima duocentésima trigésima cuarta
   * i2a, es, 700000001001, setecientos mil miliones mil uno
   * i2a, es, 270023576340045, doscientos setenta billones veintitres mil quinientos setenta y seis miliones trescientos cuarenta mil cuarenta y cinco
+  * i2a, es_ord_fem, 270023576340045, doscientos setenta billones veintitres mil quinientos setenta y seismillonésima trescientos cuarentamilésima cuadragésima quinta
   * i2a, es, 980320002004034323319, novecientos ochenta trillones trescientos veinte mil dos billones cuatro mil treinta y cuatro miliones trescientos veintitres mil trescientos diecinueve
   * f2a, es, 1031,01, mil treinta y uno con una centésima
   * f2a, es_fem, 1031,01, mil treinta y una con una centésima
   * f2a, es, 4300923,0003, cuatro miliones trescientos mil novecientos veintitres con trescientas millonésimas
   * f2a, es_fem, 63289321,00000065, sesenta y tres miliones doscientos ochenta y nueve mil trescientas veintiuna coma cero cero cero cero cero cero sesenta y cinco
-
 
 
 [de]
