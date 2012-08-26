@@ -22,6 +22,8 @@ $r['en'] = array ( /*{{{*/
 
 	'n-' => 'minus ',
 	'n.' => ' comma ',
+	'n.0' => 'zero ',
+
 	'n0' => 'zero',
 	'n1' => 'one',
 	'n2' => 'two',

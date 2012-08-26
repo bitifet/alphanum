@@ -132,12 +132,12 @@ $r['es'] = array ( // Default / male:/*{{{*/
 
 );/*}}}*/
 
-$r['es_det'] = array (
+$r['es_det'] = array (/*{{{*/
 	'@label' => 'Determinante',
 	'@import' => 'es',
 
 	'n1'	=> 'un',
-);
+);/*}}}*/
 
 $r['es_fem'] = array ( // Female variations:/*{{{*/
 

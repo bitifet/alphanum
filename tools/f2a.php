@@ -15,7 +15,7 @@ require_once (dirname(__FILE__) . '/../lib/alphanum.class.php');
 if (
 	! is_numeric (@ $n0 = $argv[2])
 ) die (
-	"Syntax: " . $argv[0] . " <lang_code> <start> [[end=start] inc=1]\n"
+	"Syntax: " . $argv[0] . " <lang_code> <start> [end=start [inc=1]]\n"
 );
 /*}}}*/
 
@@ -28,8 +28,8 @@ $x = new alphanum(
 ((@ $n = $argv[3] + 0) > $n0) || $n = $n0;
 /*}}}*/
 
-// $n = Stop (defaults to start):/*{{{*/
-((@ $inc = $argv[4] + 0) >= 1) || $inc = 1;
+// $n = Increment (defaults to 1):/*{{{*/
+(0 < @ $inc = $argv[4] + 0) || $inc = 1;
 /*}}}*/
 
 $p = 1 + floor(log($n, 10)); // Needed padding width.

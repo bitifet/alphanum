@@ -15,7 +15,7 @@ require_once (dirname(__FILE__) . '/../lib/alphanum.class.php');
 if (
 	! is_numeric (@ $n0 = $argv[2])
 ) die (
-	"Syntax: " . $argv[0] . " <lang_code> <start> [[end=start] inc=1]\n"
+	"Syntax: " . $argv[0] . " <lang_code> <start> [end=start [inc=1]]\n"
 );
 $n0 = abs(floor($n0));
 /*}}}*/
@@ -30,7 +30,7 @@ $x = new alphanum(
 $n = abs(floor($n));
 /*}}}*/
 
-// $n = Stop (defaults to start):/*{{{*/
+// $n = Increment (defaults to 1):/*{{{*/
 ((@ $inc = $argv[4] + 0) >= 1) || $inc = 1;
 $inc = floor($inc);
 /*}}}*/

@@ -117,7 +117,7 @@ class alphanum {
 		/*}}}*/
 
 		// Try to fetch language data from cache:/*{{{*/
-		$usecache && @ $this->r = unserialize (file_get_contents ($cachef = "cache/i18n_{$full_lang}.cache"));
+		$usecache && @ $this->r = unserialize (file_get_contents ($cachef = dirname (__FILE__) . "/cache/i18n_{$full_lang}.cache"));
 		/*}}}*/
 
 		// Language data processing and caching:/*{{{*/
@@ -152,10 +152,12 @@ class alphanum {
 	}/*}}}*/
 
 
-	private function get_rule ( // Return requested rule untouched:/*{{{*/
+	public function get_rule ( // Return requested rule untouched:/*{{{*/
 		$rule, // Usually '@' rules which has variable structure.
-		$lang
+		$lang,
+		$default = null
 	) {
+		if (! is_array (@ $this->r[$lang]['@import'])) return null;
 		foreach (
 			$this->r[$lang]['@import']
 			as $ilang
@@ -165,7 +167,18 @@ class alphanum {
 			if (is_null ($this->r[$ilang][$rule])) break; // Expicit null breaks inherition.
 			return $this->r[$ilang][$rule];
 		};
-		return @ $this->r['_default_'][$rule]; // Return default value (if defined) or null.
+
+		// Return default value:/*{{{*/
+		if (is_null (
+			// From _default_ specification...
+			$r = @ $this->r['_default_'][$rule] // Return default value if defined.
+		)) {
+			// ...or by parameter specification.
+			$r = $default;
+		};
+		return $r;
+		/*}}}*/
+
 	}/*}}}*/
 
 	private function rulable ( // Check for and apply indirections:/*{{{*/
@@ -241,7 +254,7 @@ class alphanum {
 		//
 		// 	WHERE:
 		//
-		// 		Left-most ditit: The (1) digit which is being considered (current position).
+		// 		Left-most digit: The (1) digit which is being considered (current position).
 		//
 		// 		Carried digits: Left-most digits which couldn't build matching pattern in previous recursion.
 		// 			They are automatically concatenated with Left-most digit in {$a} (number's left side considered from current position.
@@ -344,7 +357,7 @@ class alphanum {
 		is_numeric ($f) && $f = str_replace ('.', $dec, $f);
 
 		@ list ($i, $d) = explode ($dec, $f, 2);
-		if (is_null ($d)) return $this->i2a($i);
+		if (is_null ($d)) return $this->i2a($i, $lang);
 
 		$dlen = strlen ($d);
 		$d = ltrim($d, '0');
@@ -352,15 +365,18 @@ class alphanum {
 		// Use applicable fraction units if possible:/*{{{*/
 		$fractions = $this->get_rule ('@fractions', $lang);
 		$sep = isset ($fractions[0]) ? $fractions[0] : $this->get_rule('n.', $lang); // Alternative separator.
-		foreach (
+		if (
+			is_array ($fractions)
+		) foreach (
 			$fractions
 			as $digits => $frlabel
 		) if ($digits >= $dlen) {
 			$d .= str_repeat ('0', $digits - $dlen);
 			$number = ($d + 0 == 1) ? 0 : 1;
-			return $this->i2a($i) // Integer part.
+			is_null ($frlang = @$frlabel[2]) && $frlang = $lang;
+			return $this->i2a($i, $lang) // Integer part.
 				. $sep
-				. $this->priv_i2a($d, @$frlabel[2]) // Decimal translation in given language (null => default)
+				. $this->priv_i2a($d, $frlang) // Decimal translation in given language (null => default)
 				. $frlabel[$number]; // Label in correct number.
 		};/*}}}*/
 
@@ -368,10 +384,10 @@ class alphanum {
 		// Else, say every leading '0':/*{{{*/
 		$this->apply_rule($sep, $lang, 'n.');
 		$this->apply_rule($z, $lang, 'n.0');
-		return $this->i2a($i)
+		return $this->i2a($i, $lang)
 			. $sep
 			. str_repeat ($z, $dlen - strlen ($d))
-			. $this->priv_i2a($d);
+			. $this->priv_i2a($d, $lang);
 		/*}}}*/
 
 
