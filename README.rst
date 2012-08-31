@@ -70,9 +70,9 @@ Nowadays most complete language (and the only one with ordinal variations) is ca
 
   * i2a, en, 13, thirteen
   * i2a, en, 230007234, two hundred and thirty millions seven thousands and two hundred and thirty-four
-  * i2a, en, 700000001002, seven hundred thousands millions thousand and two
-  * i2a, en, 270023576340045, two hundred and seventy bilions twenty-three thousands and five hundred and seventy-six millions three hundred and fourty thousands and fourty-five
-  * i2a, en, 980320002004034323319, nine hundred and eighty trillons three hundred and twenty thousands and two bilions four thousands and thirty-four millions three hundred and twenty-three thousands and three hundred and nineteen
+  * i2a, en, 700000001002, seven hundred billions thousand and two
+  * i2a, en, 270023576340045, two hundred and seventy trillions twenty-three billions five hundred and seventy-six millions three hundred and fourty thousands and fourty-five
+  * i2a, en, 980320002004034323319, nine hundred and eighty quintillons three hundred and twenty quadrillons two trillions four billions thirty-four millions three hundred and twenty-three thousands and three hundred and nineteen
   * f2a, en, 1031.01, thousand and thirty-one comma zero one
   * f2a, en, 4300923.0003, four millions three hundred thousands and nine hundred and twenty-three comma zero zero zero three
 

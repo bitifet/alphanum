@@ -79,25 +79,35 @@ $r['en'] = array ( /*{{{*/
 	'nxxxxxxx' => ' millions ',
 	'n0xxxxxx' => '',
 
-	/* Not used colloquially.
-	'n1000000000' => '???????',
-	'n1xxxxxxxxx' => '??????? ',
-	'nx000000000' => ' ???????
-	'nxxxxxxxxxx' => ' ???????,
+	'n1000000000' => 'one billion',
+	'n1xxxxxxxxx' => 'one billion ',
+	'nx000000000' => ' billions',
+	'nxxxxxxxxxx' => ' billions ',
 	'n0xxxxxxxxx' => '',
-	 */
 
-	'n1000000000000' => 'one billon',
-	'n1xxxxxxxxxxxx' => 'one billon ',
-	'nx000000000000' => ' bilions',
-	'nxxxxxxxxxxxxx' => ' bilions ',
+	'n1000000000000' => 'one trillion',
+	'n1xxxxxxxxxxxx' => 'one trillion ',
+	'nx000000000000' => ' trillions',
+	'nxxxxxxxxxxxxx' => ' trillions ',
 	'n0xxxxxxxxxxxx' => '',
 
-	'n1000000000000000000' => 'one trillon',
-	'n1xxxxxxxxxxxxxxxxxx' => 'one trillon ',
-	'nx000000000000000000' => ' trillons',
-	'nxxxxxxxxxxxxxxxxxxx' => ' trillons ',
+	'n1000000000000000' => 'one quadrillon',
+	'n1xxxxxxxxxxxxxxx' => 'one quadrillon ',
+	'nx000000000000000' => ' quadrillons',
+	'nxxxxxxxxxxxxxxxx' => ' quadrillons ',
+	'n0xxxxxxxxxxxxxxx' => '',
+
+	'n1000000000000000000' => 'one quintillon',
+	'n1xxxxxxxxxxxxxxxxxx' => 'one quintillon ',
+	'nx000000000000000000' => ' quintillons',
+	'nxxxxxxxxxxxxxxxxxxx' => ' quintillons ',
 	'n0xxxxxxxxxxxxxxxxxx' => '',
+
+	'n1000000000000000000000' => 'one sextillon',
+	'n1xxxxxxxxxxxxxxxxxxxxx' => 'one sextillon ',
+	'nx000000000000000000000' => ' sextillon',
+	'nxxxxxxxxxxxxxxxxxxxxxx' => ' sextillon ',
+	'n0xxxxxxxxxxxxxxxxxxxxx' => '',
 
 );/*}}}*/
 

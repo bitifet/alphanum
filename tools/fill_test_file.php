@@ -13,7 +13,10 @@ if (! count ($langspec = $argv)) {
 	die();
 };
 
-$x = new alphanum ($langspec);
+$x = new alphanum (
+	$langspec,
+	false // Disable cache for debugging.
+);
 
 
 while (! feof (STDIN)) {
@@ -44,7 +47,7 @@ while (! feof (STDIN)) {
 	if (
 		strlen ($out = trim (@ $out))
 	) {
-		echo "{$row}($out)\n";
+		echo "{$row}\n";
 		continue; // Preserve previous value.
 	};
 	strlen ($func = trim(@ $func)) || $func = @ $lastfunc; // Let to omit when same.
